@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  labels:
+    component: redis
+    tier: private
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: redis
+      labels:
+        component: redis
+        tier: private
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.4.0
+          ports:
+            - containerPort: 6379
+  selector:
+    matchLabels:
+      component: redis
+      tier: private

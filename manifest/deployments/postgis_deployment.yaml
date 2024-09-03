@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgis-deployment
+  labels:
+    component: postgis
+    tier: private
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: postgis
+      labels:
+        component: postgis
+        tier: private
+    spec:
+      containers:
+        - name: postgis
+          image: postgis/postgis:16-3.4
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: webgis
+            - name: POSTGRES_DB
+              value: gis-db
+  selector:
+    matchLabels:
+      component: postgis
+      tier: private
+
+
+      

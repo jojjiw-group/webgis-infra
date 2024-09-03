@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisinsight-deployment
+  labels:
+    component: redisinsight
+    tier: private
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: redisinsight
+      labels:
+        component: redisinsight
+        tier: public
+    spec:
+      containers:
+        - name: redisinsight
+          image: redis/redisinsight:latest
+          ports:
+            - containerPort: 5540
+  selector:
+    matchLabels:
+      component: redisinsight
+      tier: public

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin-deployment
+  labels:
+    component: pgadmin
+    tier: public
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: pgadmin
+      labels:
+        component: pgadmin
+        tier: public
+    spec:
+      containers:
+        - name: pgadmin
+          image: dpage/pgadmin4:latest
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: admin@domain.com
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: webgis
+          ports:
+            - containerPort: 80
+  selector:
+    matchLabels:
+      component: pgadmin
+      tier: public
+
+
+      
