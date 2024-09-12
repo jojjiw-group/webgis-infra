@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgis-pv
+  labels: 
+    name: postgis-pv
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: "/data/home/kittisak/work/webgis/webgis-infra/data/postgis"
+  storageClassName: postgis-storage-class
+
