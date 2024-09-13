@@ -96,7 +96,7 @@ kubectl apply -f https://reweave.azurewebsites.net/k8s/v1.29/net.yaml
 # Add ENV variable for wave-net (env: IPALLOC_RANGE = 192.168.0.0/16)
 kubectl get ds -n kube-system weave-net -o yaml > prev_weave-net.yaml
 sed -i '/name: CHECKPOINT_DISABLE/{N;s/\(value: \"1\"\)/\1\n        - name: '"IPALLOC_RANGE"'\n          value: '"192\.168\.0\.0\/16"'/}' prev_weave-net.yaml
-kubectl replace -f test.yaml
+kubectl replace -f prev_weave-net.yaml
 
 #————————————————————————————
 
