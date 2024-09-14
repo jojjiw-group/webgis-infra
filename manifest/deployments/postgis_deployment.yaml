@@ -30,28 +30,20 @@ spec:
               value: gis-db
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgis-vol1
-
-          # volumeMounts:
-          #   - mountPath: "/var/lib/postgresql/data"
-          #     name: postgis-vol
+              name: postgis-vol
       initContainers:
         - name: init-myservice
           image: postgis/postgis:16-3.4
           command: ['chown', '-R', 'postgres', '/var/lib/postgresql/data']
           securityContext:
             privileged: true
-
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgis-vol
       volumes:
-        - name: postgis-vol1
-          hostPath:
-            path: /data/home/kittisak/work/webgis/webgis-infra/data/postgis
-            type: DirectoryOrCreate
-
-      # volumes:
-      #   - name: postgis-vol
-      #     persistentVolumeClaim:
-      #       claimName: postgis-pvc
+        - name: postgis-vol
+          persistentVolumeClaim:
+            claimName: postgis-pvc
   selector:
     matchLabels:
       component: postgis

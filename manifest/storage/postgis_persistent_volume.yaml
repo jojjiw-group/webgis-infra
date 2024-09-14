@@ -10,6 +10,6 @@ spec:
   capacity:
     storage: 10Gi
   hostPath:
-    path: "/data/home/kittisak/work/webgis/webgis-infra/data/postgis"
+    path: "/data/postgis_pv"
   storageClassName: postgis-storage-class
 
