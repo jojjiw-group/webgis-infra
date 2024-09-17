@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geoserver-deployment
+  labels:
+    component: geoserver
+    tier: private
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: geoserver
+      labels:
+        component: geoserver
+        tier: private
+    spec:
+      containers:
+        - name: geoserver
+          image: docker.osgeo.org/geoserver:2.25.1
+          ports:
+            - containerPort: 8080
+          env:
+          - name: SKIP_DEMO_DATA
+            value: "true"
+          - name: ROOT_WEBAPP_REDIRECT
+            value: "true"
+          - name: CORS_ENABLED
+            value: "true"
+          volumeMounts:
+            - mountPath: /opt/geoserver_data/
+              name: geoserver-vol
+      volumes:
+        - name: geoserver-vol
+          persistentVolumeClaim:
+            claimName: geoserver-pvc
+  selector:
+    matchLabels:
+      component: geoserver
+      tier: private

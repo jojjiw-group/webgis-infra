@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: geoserver-pv
+  labels: 
+    name: geoserver-pv
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: "/data/geoserver_pv"
+  storageClassName: geoserver-storage-class
