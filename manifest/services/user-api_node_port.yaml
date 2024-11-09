@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-api-node-port
+  labels:
+    name: user-api-node-port
+spec:
+  type: NodePort
+  ports:
+    - port: 3002
+      targetPort: 3002
+      nodePort: 31010
+  selector:
+    component: user-api
+    tier: protected

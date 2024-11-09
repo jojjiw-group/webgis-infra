@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-api-deployment
+  labels:
+    component: auth-api
+    tier: protected
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: auth-api
+      labels:
+        component: auth-api
+        tier: protected
+    spec:
+      initContainers:
+        - name: db-migrate
+          image: jojjiw/webgis-user-api:dev000
+          env:
+          - name: DATABASE_HOST
+            value: "postgis-cluster-ip"
+          - name: DATABASE_PORT
+            value: "5432"
+          - name: RAILS_ENV
+            value: "development"
+          - name: REDIS_URL
+            value: "redis://redis_cluster_ip:6379"
+          - name: WS_URL
+            value: "ws://ws_server:1337"
+          - name: INGESTER_REDIS_CHANNEL
+            value: "ingester"
+          - name: POSTGRES_USER
+            value: "admin"
+          - name: POSTGRES_PASSWORD
+            value: "webgis"
+          - name: POSTGRES_DB
+            value: "webgis_streamer"
+          - name: POSTGRES_TEST_DB
+            value: "webgis_streamer_test"
+          command: ['sh', '-c', 'rake db:create; rake db:migrate']
+      containers:
+        - name: auth-api
+          image: jojjiw/webgis-auth-api:dev000
+          ports:
+            - containerPort: 3003
+          env:
+          - name: DATABASE_HOST
+            value: "postgis-cluster-ip"
+          - name: DATABASE_PORT
+            value: "5432"
+          - name: RAILS_ENV
+            value: "development"
+          - name: REDIS_URL
+            value: "redis://redis_cluster_ip:6379"
+          - name: WS_URL
+            value: "ws://ws_server:1337"
+          - name: INGESTER_REDIS_CHANNEL
+            value: "ingester"
+          - name: POSTGRES_USER
+            value: "admin"
+          - name: POSTGRES_PASSWORD
+            value: "webgis"
+          - name: POSTGRES_DB
+            value: "webgis_streamer"
+          - name: POSTGRES_TEST_DB
+            value: "webgis_streamer_test"
+  selector:
+    matchLabels:
+      component: auth-api
+      tier: protected
